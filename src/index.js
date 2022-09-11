@@ -15,6 +15,4 @@ app.use(authRouter);
 // app.use(walletRouter);
 
 const port = process.env.PORT;
-app.listen(port, () =>
-  console.log(`Magic happens @ http://localhost:${port}...`)
-);
+app.listen(port, () => console.log(`Magic happens @ http://localhost:${port}...`));
