@@ -47,9 +47,8 @@ const login = async (req, res) => {
     const token = uuid();
     await db.collection("sessions").updateOne({userId: user._id}, {$set: {isActive: false}});
     await db.collection("sessions").insertOne({userId: user._id, token, isActive: true});
-    res.status(200).send({token});
+    res.status(200).send({token, name: user.name});
   } catch (e) {
-    console.log(e.message);
     res.sendStatus(500);
   }
 };
@@ -58,7 +57,6 @@ const logout = async (req, res) => {
   const {token} = res.locals;
   try {
     await db.collection("sessions").updateOne({token}, {$set: {isActive: false}});
-
     res.sendStatus(200);
   } catch (e) {
     res.sendStatus(500);
