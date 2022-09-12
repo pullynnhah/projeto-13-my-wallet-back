@@ -17,6 +17,7 @@ const createTransaction = async (req, res) => {
     const {insertedId} = await db.collection("wallets").insertOne({
       amount: Number(data.amount),
       description: data.description,
+      type: data.type,
       userId,
       date: dayjs().format("DD/MM"),
     });
