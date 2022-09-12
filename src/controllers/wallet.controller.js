@@ -14,9 +14,12 @@ const listTransactions = async (req, res) => {
 const createTransaction = async (req, res) => {
   const {data, userId} = res.locals;
   try {
-    const {insertedId} = await db
-      .collection("wallets")
-      .insertOne({...data, userId, date: dayjs().format("DD/MM")});
+    const {insertedId} = await db.collection("wallets").insertOne({
+      amount: Number(data.amount),
+      description: data.description,
+      userId,
+      date: dayjs().format("DD/MM"),
+    });
     res.status(201).send({walletId: insertedId});
   } catch (e) {
     res.sendStatus(500);
@@ -32,12 +35,12 @@ const editTransaction = async (req, res) => {
   }
 
   try {
-    const wallets = await db.collection("wallets").findOne({_id: ObjectId(wallet)});
-    console.log(wallets);
-    const {modifiedCount} = await db
+    await db
       .collection("wallets")
-      .updateOne({_id: ObjectId(wallet)}, {$set: data});
-    console.log(modifiedCount);
+      .updateOne(
+        {_id: ObjectId(wallet)},
+        {$set: {amount: Number(data.amount), description: data.description}}
+      );
     res.sendStatus(201);
   } catch (e) {
     res.sendStatus(500);

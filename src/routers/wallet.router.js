@@ -13,10 +13,10 @@ const router = express.Router();
 router.use(auth);
 router.use(getUser);
 router.get("/transaction", listTransactions);
+router.delete("/transaction", removeTransaction);
 
 router.use(validate);
 router.post("/transaction", createTransaction);
 router.put("/transaction", editTransaction);
-router.delete("/transaction", removeTransaction);
 
 export default router;
