@@ -7,11 +7,12 @@ const auth = async (req, res, next) => {
   }
 
   try {
-    const user = await db.collection("sessions").findOne({$and: [{token}, {isActive: true}]});
-    if (!user) {
+    const session = await db.collection("sessions").findOne({$and: [{token}, {isActive: true}]});
+    if (!session) {
       return res.sendStatus(401);
     }
 
+    res.locals.session = session;
     res.locals.token = token;
     next();
   } catch (e) {

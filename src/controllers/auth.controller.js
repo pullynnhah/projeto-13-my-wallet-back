@@ -3,11 +3,7 @@ import {v4 as uuid} from "uuid";
 
 import {db} from "../database/mongo.db.js";
 import {signupSchema, loginSchema} from "../schemas/auth.schema.js";
-
-function validateJOI(schema, body) {
-  const validation = schema.validate(body);
-  return !validation.error;
-}
+import {validateJOI} from "../utils/validation.js";
 
 const SALT = 11;
 
@@ -59,7 +55,7 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  const token = res.locals.token;
+  const {token} = res.locals;
   try {
     await db.collection("sessions").updateOne({token}, {$set: {isActive: false}});
 
